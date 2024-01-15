@@ -5,7 +5,6 @@
 #include "ping_cmd.hh"
 
 #include <string>
-#include <memory>
 
 namespace dockercpp::command::exec {
 

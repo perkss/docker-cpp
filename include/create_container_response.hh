@@ -5,7 +5,6 @@
 
 #include <nlohmann/json.hpp>
 
-// https://github.com/docker-java/docker-java/blob/main/docker-java-api/src/main/java/com/github/dockerjava/api/command/CreateContainerResponse.java
 namespace dockercpp::model {
 struct CreateContainerResponse : public DockerObject {
  public:

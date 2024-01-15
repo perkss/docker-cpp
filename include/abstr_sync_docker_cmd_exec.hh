@@ -1,10 +1,9 @@
 #ifndef SRC_ABSTR_SYNC_DOCKER_CMD_EXEC_HPP
 #define SRC_ABSTR_SYNC_DOCKER_CMD_EXEC_HPP
 
-#include <concepts>
 #include <iostream>
-#include <memory>
 #include <type_traits>
+#include <memory>
 
 #include "docker_client_config.hh"
 #include "docker_cmd.hh"

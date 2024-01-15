@@ -1,7 +1,6 @@
 #ifndef SRC_INFO_CMD_EXEC_HPP
 #define SRC_INFO_CMD_EXEC_HPP
 
-#include <memory>
 #include <string>
 
 #include "abstr_sync_docker_cmd_exec.hh"

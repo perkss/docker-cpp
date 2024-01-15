@@ -3,9 +3,6 @@
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 
-#include <memory>
-
-#include "../src/remove_image_cmd_exec.hh"
 #include "../src/version_cmd_exec.hh"
 #include "docker_client.hh"
 #include "info.hh"

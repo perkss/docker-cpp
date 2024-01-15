@@ -22,7 +22,7 @@ class InvocationBuilder {
 
 class WebTarget {
  public:
-  WebTarget(const std::string& path) : m_path(path){};
+  explicit WebTarget(const std::string& path) : m_path(path){};
   WebTarget(const std::string& path,
             const std::unordered_map<std::string, std::string>& queryParams);
   WebTarget path(const std::string& components);

@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <unordered_map>
+#include <utility>
 
 #include "docker_http_client.hh"
 
@@ -63,7 +64,7 @@ http::Response deletecurl(Request &request) {
   spdlog::info("Delete requested");
   auto curl = curl_easy_init();
 
-  struct data config;
+  data config{};
 
   config.trace_ascii = 0; /* enable ascii tracing */
 
@@ -78,7 +79,7 @@ http::Response deletecurl(Request &request) {
   curl_easy_setopt(curl, CURLOPT_URL, requestUrl.c_str());
   curl_easy_setopt(curl, CURLOPT_UNIX_SOCKET_PATH, "/var/run/docker.sock");
 
-  struct curl_slist *headers = NULL;
+  curl_slist *headers = nullptr;
   headers = curl_slist_append(headers, "Accept: application/json");
   headers = curl_slist_append(headers, "Content-Type: application/json");
   headers = curl_slist_append(headers, "charset: utf-8");
@@ -99,7 +100,7 @@ http::Response deletecurl(Request &request) {
 
   curl_easy_perform(curl);
   curl_easy_cleanup(curl);
-  curl = NULL;
+  curl = nullptr;
 
   spdlog::info("Response is {}", response_string);
   spdlog::info("Response header is {}", header_string);
@@ -113,7 +114,7 @@ http::Response deletecurl(Request &request) {
 http::Response postcurl(Request &request) {
   spdlog::info("Post requested");
   auto curl = curl_easy_init();
-  struct data config;
+  data config;
 
   config.trace_ascii = 0; /* enable ascii tracing */
   if (curl) {
@@ -134,11 +135,10 @@ http::Response postcurl(Request &request) {
       fields = "{}";
     }
 
-    //
     spdlog::info("About to send post: {}", request.body().c_str());
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, fields.c_str());
 
-    struct curl_slist *headers = NULL;
+    curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/json");
     headers = curl_slist_append(headers, "charset: utf-8");
@@ -159,7 +159,7 @@ http::Response postcurl(Request &request) {
 
     curl_easy_perform(curl);
     curl_easy_cleanup(curl);
-    curl = NULL;
+    curl = nullptr;
     spdlog::info("Response is {}", response_string);
     spdlog::info("Response code {}", response_code);
     spdlog::info("Response header is {}", header_string);
@@ -175,16 +175,17 @@ http::Response postcurl(Request &request) {
 
 static size_t OnReceiveData(void *pData, size_t tSize, size_t tCount,
                             void *pmUser) {
-  size_t length = tSize * tCount, index = 0;
+  const size_t length = tSize * tCount;
+  size_t index = 0;
   while (index < length) {
-    unsigned char *temp = (unsigned char *)pData + index;
+    const unsigned char *temp = static_cast<unsigned char *>(pData) + index;
     if ((temp[0] == '\r') || (temp[0] == '\n')) break;
     index++;
   }
 
-  std::string str((unsigned char *)pData, (unsigned char *)pData + index);
-  std::unordered_map<std::string, std::string> *pmHeader =
-      (std::unordered_map<std::string, std::string> *)pmUser;
+  std::string str(static_cast<unsigned char *>(pData), static_cast<unsigned char *>(pData) + index);
+  auto *pmHeader =
+      static_cast<std::unordered_map<std::string, std::string> *>(pmUser);
   size_t pos = str.find(": ");
   if (pos != std::string::npos)
     pmHeader->insert(std::pair<std::string, std::string>(str.substr(0, pos),
@@ -224,7 +225,7 @@ http::Response requestcurl(const std::string &path) {
     curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
 
     curl_easy_cleanup(curl);
-    curl = NULL;
+    curl = nullptr;
 
     spdlog::info("Response is code={}, body={}", response_code,
                  response_string);
@@ -254,10 +255,10 @@ Response CurlDockerHttpClient::execute(Request request) {
   }
 }
 
-Builder CurlDockerHttpClient::make() { return Builder(); }
+Builder CurlDockerHttpClient::make() { return {}; }
 
 Builder &Builder::withDockerHost(std::string dockerHost) {
-  m_curlClientDockerClient.m_dockerHost = dockerHost;
+  m_curlClientDockerClient.m_dockerHost = std::move(dockerHost);
   return *this;
 }
 

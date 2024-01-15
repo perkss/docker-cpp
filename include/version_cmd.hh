@@ -13,7 +13,7 @@ namespace dockercpp::command {
 class VersionCmd : public SynchDockerCmd<model::Version>,
                    public std::enable_shared_from_this<VersionCmd> {
  public:
-  ~VersionCmd() {}
+  ~VersionCmd() override = default;
 };
 
 namespace version {
@@ -31,7 +31,7 @@ class VersionCmdImpl : public VersionCmd,
   model::Version exec() override;
 
   void close() override {}
-  ~VersionCmdImpl() {}
+  ~VersionCmdImpl() override = default;
 };
 
 }  // namespace dockercpp::command

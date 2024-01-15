@@ -2,14 +2,13 @@
 #define VERSION_H
 
 #include "docker_object.hh"
-#include <spdlog/spdlog.h>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
 namespace dockercpp::model {
 
-struct Version : public DockerObject {
+struct Version : DockerObject {
   std::string apiVersion;
   std::string arch;
   std::string goVersion;

@@ -26,7 +26,7 @@ model::Version VersionCmdExec::execute(
 
   spdlog::info("converting string {}", response);
 
-  nlohmann::json json = nlohmann::json::parse(response);
+  const nlohmann::json json = nlohmann::json::parse(response);
 
   spdlog::info("Parsed json");
   return json.get<model::Version>();

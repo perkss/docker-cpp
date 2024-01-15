@@ -1,7 +1,6 @@
 #ifndef SRC_DOCKER_HTTP_CLIENT_HPP
 #define SRC_DOCKER_HTTP_CLIENT_HPP
 
-#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -10,13 +9,14 @@ namespace dockercpp::transport::http {
 
 class Response {
  public:
-  Response(long status, std::unordered_map<std::string, std::string> headers,
-           std::string body);
+  Response(long status, const std::unordered_map<std::string, std::string>& headers,
+           const std::string& body);
 
-  long getStatusCode();
+  long getStatusCode() const;
+  
   std::unordered_map<std::string, std::string> getHeaders();
 
-  std::string getHeader(std::string name);
+  std::string getHeader(const std::string& name);
 
   std::string getBody();
 
@@ -30,7 +30,6 @@ class Response {
 
 class RequestBuilder;
 
-// https://github.com/docker-java/docker-java/blob/main/docker-java-transport/src/main/java/com/github/dockerjava/transport/DockerHttpClient.java#L47
 class Request {
  public:
   enum class Method {
@@ -58,9 +57,9 @@ class Request {
 
 class RequestBuilder {
  public:
-  RequestBuilder& withMethod(Request::Method method);
-  RequestBuilder& withBody(std::string body);
-  RequestBuilder& withPath(std::string path);
+  RequestBuilder& withMethod(const Request::Method& method);
+  RequestBuilder& withBody(const std::string& body);
+  RequestBuilder& withPath(const std::string& path);
 
   operator Request&&() { return std::move(m_request); }
 

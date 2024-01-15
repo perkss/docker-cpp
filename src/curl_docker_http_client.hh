@@ -7,7 +7,7 @@ namespace dockercpp::transport::http {
 
 class Builder;
 
-class CurlDockerHttpClient : public DockerHttpClient {
+class CurlDockerHttpClient final : public DockerHttpClient {
  public:
   friend class Builder;
   static Builder make();
@@ -16,8 +16,8 @@ class CurlDockerHttpClient : public DockerHttpClient {
  private:
   CurlDockerHttpClient() = default;
   std::string m_dockerHost;
-  int m_readTimeout;
-  int m_connectTimeout;
+  int m_readTimeout{};
+  int m_connectTimeout{};
 };
 
 class Builder {

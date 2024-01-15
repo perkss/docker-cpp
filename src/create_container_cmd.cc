@@ -4,17 +4,17 @@
 
 namespace dockercpp::command {
 
-CreateContainerCmd& CreateContainerCmd::withName(std::string name) {
+CreateContainerCmd& CreateContainerCmd::withName(const std::string& name) {
   request.name = name;
   return *this;
 }
 
-CreateContainerCmd& CreateContainerCmd::withHost(std::string name) {
+CreateContainerCmd& CreateContainerCmd::withHost(const std::string& name) {
   request.hostName = name;
   return *this;
 }
 
-CreateContainerCmd& CreateContainerCmd::withCmd(std::string cmd) {
+CreateContainerCmd& CreateContainerCmd::withCmd(const std::string& cmd) {
   request.cmd.push_back(cmd);
   return *this;
 }

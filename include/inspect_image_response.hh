@@ -9,7 +9,7 @@
 
 namespace dockercpp::model {
 
-struct InspectImageResponse : public DockerObject {
+struct InspectImageResponse : DockerObject {
     std::string id;
 };
 
