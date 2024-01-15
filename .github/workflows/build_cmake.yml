@@ -38,12 +38,6 @@ jobs:
           ln -s "$(brew --prefix llvm)/bin/clang-apply-replacements" "/usr/local/bin/clang-apply-replacements"
       - name: Build CMAKE directory
         run: |
-          echo log include
-          ls /usr/local/include/boost  | grep url
-          echo log cellar
-          ls /usr/local/Cellar/boost/1.82.0_1/include/boost | grep url
-          pwd
-          ls
           cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build
           cmake --build build
           cmake --build build -t test

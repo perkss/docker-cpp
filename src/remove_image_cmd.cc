@@ -1,7 +1,5 @@
 #include "remove_image_cmd.hh"
 
-#include <vector>
-
 namespace dockercpp::command {
 
 RemoveImageCmdImpl::RemoveImageCmdImpl(std::unique_ptr<remove::Exec> exec,

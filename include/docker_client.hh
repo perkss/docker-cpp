@@ -1,8 +1,6 @@
 #ifndef DOCKER_CLIENT_H
 #define DOCKER_CLIENT_H
 
-#include <memory>
-
 #include "create_container_cmd.hh"
 #include "info_cmd.hh"
 #include "ping_cmd.hh"

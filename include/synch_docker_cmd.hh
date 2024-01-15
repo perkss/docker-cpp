@@ -4,7 +4,6 @@
 #include <spdlog/spdlog.h>
 
 #include <memory>
-#include <typeinfo>
 
 #include "abstr_sync_docker_cmd_exec.hh"
 #include "docker_cmd.hh"
@@ -30,12 +29,6 @@ class AbstrDockerCmd : SynchDockerCmd<RES_T> {
       : m_execution(std::move(execution)){};
 
   RES_T exec() override {
-    //
-
-    auto x = this;
-    spdlog::info("calling exec {}");
-
-    // TODO this is used and is sync
   }
 
   ~AbstrDockerCmd() {}

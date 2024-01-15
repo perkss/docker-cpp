@@ -3,7 +3,6 @@
 #include <spdlog/spdlog.h>
 
 #include <boost/algorithm/string/join.hpp>
-#include <iterator>
 #include <numeric>
 
 #include "curl_docker_http_client.hh"

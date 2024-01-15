@@ -20,7 +20,7 @@ namespace inspectcontainer {
 class Exec : public exec::DockerCmdSyncExec<InspectContainerCmd,
                                             model::InspectContainerResponse> {
  public:
-  ~Exec() {}
+  ~Exec() override = default;
 };
 }  // namespace inspectcontainer
 
@@ -38,7 +38,7 @@ class InspectContainerCmdImpl
 
   std::string getContainerId() override;
 
-  ~InspectContainerCmdImpl() {}
+  ~InspectContainerCmdImpl() override = default;
 
  private:
   std::string m_containerId;

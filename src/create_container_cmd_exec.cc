@@ -23,7 +23,7 @@ model::CreateContainerResponse CreateContainerCmdExec::execute(
   spdlog::info("Execute called in the CreateContainer cmd exec");
   core::WebTarget webResource = m_webTarget->path("/containers/create");
 
-  nlohmann::json request = command->getRequest();
+  const nlohmann::json request = command->getRequest();
 
   std::string body = request.dump();
 

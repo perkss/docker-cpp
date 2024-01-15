@@ -1,8 +1,6 @@
 #include "docker_client.hh"
 
-#include <cstddef>
 #include <memory>
-#include <utility>
 
 #include "create_container_cmd_exec.hh"
 #include "info_cmd.hh"

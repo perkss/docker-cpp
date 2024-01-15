@@ -49,31 +49,30 @@ std::string DefaultDockerClientConfig::getRegistryUrl() {
   return m_registryUrl;
 }
 
-Builder& Builder::withDockerHost(std::string dockerHost) {
+Builder& Builder::withDockerHost(const std::string& dockerHost) {
   m_dockerconfig.m_dockerHost = dockerHost;
   return *this;
 }
-Builder& Builder::withRegistryUsername(std::string username) {
+Builder& Builder::withRegistryUsername(const std::string& username) {
   m_dockerconfig.m_registryUsername = username;
   return *this;
 }
-Builder& Builder::withRegistryPassword(std::string password) {
+Builder& Builder::withRegistryPassword(const std::string& password) {
   m_dockerconfig.m_registryPassword = password;
   return *this;
 }
-Builder& Builder::withRegistryEmail(std::string email) {
+Builder& Builder::withRegistryEmail(const std::string& email) {
   m_dockerconfig.m_registryEmail = email;
   return *this;
 }
-Builder& Builder::withRegistryUrl(std::string url) {
-  // test passing by reference
+Builder& Builder::withRegistryUrl(const std::string& url) {
   m_dockerconfig.m_registryUrl = url;
   return *this;
 }
 
 Builder DefaultDockerClientConfig::make() {
   spdlog::info("Make default client config builder");
-  return Builder();
+  return Builder{};
 }
 
 }  // namespace dockercpp::core

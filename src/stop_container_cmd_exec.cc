@@ -1,7 +1,5 @@
 #include "stop_container_cmd_exec.hh"
 
-#include <memory>
-
 #include "abstr_sync_docker_cmd_exec.hh"
 #include "webtarget.hh"
 

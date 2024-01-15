@@ -14,7 +14,6 @@ std::string PullImageCmdExec::exec(
   return execute(command);
 }
 
-// https://github.com/docker-java/docker-java/blob/main/docker-java-core/src/main/java/com/github/dockerjava/core/exec/PullImageCmdExec.java
 std::string PullImageCmdExec::execute(
     std::shared_ptr<dockercpp::command::PullImageCmd> command) {
   core::WebTarget webResource = m_webTarget->path("/images/create");
@@ -23,7 +22,7 @@ std::string PullImageCmdExec::execute(
   webResource.queryParam("fromImage", command->getRepository());
   webResource.queryParam("tag", command->getTag());
 
-  std::string emptyBoyd = "";
+  std::string emptyBoyd;
   // no body
   std::string response = webResource.request().post(emptyBoyd);
   return "";

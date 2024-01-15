@@ -1,7 +1,6 @@
 #ifndef SRC_REMOVE_IMAGE_CMD_EXEC_HPP
 #define SRC_REMOVE_IMAGE_CMD_EXEC_HPP
 
-#include <memory>
 #include <string>
 
 #include "abstr_sync_docker_cmd_exec.hh"

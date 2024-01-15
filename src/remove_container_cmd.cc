@@ -5,7 +5,7 @@ namespace dockercpp::command {
 RemoveContainerCmdImpl::RemoveContainerCmdImpl(
     std::unique_ptr<removecontainer::Exec> exec, std::string containerId)
     : AbstrDockerCmd<RemoveContainerCmd, std::string>(std::move(exec)) {
-  withContainerId(containerId);
+  RemoveContainerCmdImpl::withContainerId(containerId);
 }
 
 std::string RemoveContainerCmdImpl::exec() {

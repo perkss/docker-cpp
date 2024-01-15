@@ -21,17 +21,17 @@ class CreateContainerCmd
     : public SynchDockerCmd<model::CreateContainerResponse>,
       public std::enable_shared_from_this<CreateContainerCmd> {
  public:
-  CreateContainerCmd& withName(std::string name);
+  CreateContainerCmd& withName(const std::string& name);
 
-  CreateContainerCmd& withHost(std::string name);
+  CreateContainerCmd& withHost(const std::string& name);
 
-  CreateContainerCmd& withCmd(std::string cmd);
+  CreateContainerCmd& withCmd(const std::string& cmd);
 
   CreateContainerCmd& withCmd(const std::vector<std::string>& cmd);
 
   CreateContainerRequest getRequest() { return request; }
 
-  ~CreateContainerCmd() {}
+  ~CreateContainerCmd() override = default;
 
  protected:
   CreateContainerRequest request;
@@ -41,11 +41,10 @@ namespace createcontainer {
 class Exec : public exec::DockerCmdSyncExec<CreateContainerCmd,
                                             model::CreateContainerResponse> {
  public:
-  ~Exec() {}
+  ~Exec() override = default;
 };
 }  // namespace createcontainer
 
-// https://github.com/docker-java/docker-java/blob/main/docker-java-core/src/main/java/com/github/dockerjava/core/command/CreateContainerCmdImpl.java
 class CreateContainerCmdImpl
     : public CreateContainerCmd,
       public AbstrDockerCmd<CreateContainerCmd,

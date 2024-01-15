@@ -1,9 +1,7 @@
 #ifndef SRC_DOCKER_CLIENT_CONFIG_HPP
 #define SRC_DOCKER_CLIENT_CONFIG_HPP
 
-#include <memory>
 #include <string>
-#include <unordered_set>
 
 namespace dockercpp::core {
 
@@ -24,18 +22,18 @@ class DefaultDockerClientConfig : DockerClientConfig {
   friend class Builder;
   static Builder make();
 
-    std::string getDockerHost() override;
+  std::string getDockerHost() override;
   std::string getRegistryUsername() override;
   std::string getRegistryPassword() override;
   std::string getRegistryEmail() override;
   std::string getRegistryUrl() override;
 
-  ~DefaultDockerClientConfig() {}
+  ~DefaultDockerClientConfig() override = default;
 
  private:
   DefaultDockerClientConfig() = default;
 
-    std::string m_dockerHost;
+  std::string m_dockerHost;
   std::string m_registryUsername;
   std::string m_registryPassword;
   std::string m_registryEmail;
@@ -44,16 +42,13 @@ class DefaultDockerClientConfig : DockerClientConfig {
 
 class Builder {
  public:
-  Builder& withDockerHost(std::string dockerHost);
-  Builder& withRegistryUsername(std::string username);
-  Builder& withRegistryPassword(std::string password);
-  Builder& withRegistryEmail(std::string email);
-  Builder& withRegistryUrl(std::string url);
+  Builder& withDockerHost(const std::string& dockerHost);
+  Builder& withRegistryUsername(const std::string& username);
+  Builder& withRegistryPassword(const std::string& password);
+  Builder& withRegistryEmail(const std::string& email);
+  Builder& withRegistryUrl(const std::string& url);
 
-  operator DefaultDockerClientConfig&&() {
-    // TODO think about this return
-    return std::move(m_dockerconfig);
-  }
+  operator DefaultDockerClientConfig&&() { return std::move(m_dockerconfig); }
 
  private:
   DefaultDockerClientConfig m_dockerconfig;

@@ -3,14 +3,9 @@
 
 #include <spdlog/spdlog.h>
 
-#include <concepts>
-#include <memory>
 #include <string>
-#include <type_traits>
-#include <utility>
 
 #include "abstr_sync_docker_cmd_exec.hh"
-#include "docker_cmd.hh"
 #include "synch_docker_cmd.hh"
 
 namespace dockercpp::command {
@@ -19,7 +14,7 @@ namespace dockercpp::command {
 class PingCmd : public SynchDockerCmd<std::string>,
                 public std::enable_shared_from_this<PingCmd> {
  public:
-  ~PingCmd() {}
+  ~PingCmd() override = default;
 };
 
 namespace ping {

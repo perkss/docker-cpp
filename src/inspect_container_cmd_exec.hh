@@ -16,7 +16,7 @@ class InspectContainerCmdExec
       std::shared_ptr<dockercpp::command::InspectContainerCmd> command)
       override;
 
-  ~InspectContainerCmdExec() {}
+  ~InspectContainerCmdExec() override = default;
 
  protected:
   model::InspectContainerResponse execute(

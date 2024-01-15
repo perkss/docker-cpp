@@ -39,7 +39,7 @@ class InspectImageCmdImpl
 
   std::string getImageId() override;
 
-  ~InspectImageCmdImpl() {}
+  ~InspectImageCmdImpl() override = default;
 
  private:
   std::string m_imageId;
