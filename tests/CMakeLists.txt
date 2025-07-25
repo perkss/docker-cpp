@@ -13,6 +13,13 @@ add_executable(
         curl_docker_http_client_test.cc
         create_container_response_test.cc
         create_container_cmd_test.cc
+        events_cmd_test.cc
+        events_cmd_exec_test.cc
+        exec_create_cmd_test.cc
+        exec_create_cmd_exec_test.cc
+        search_images_cmd_test.cc
+        stats_container_cmd_test.cc
+        update_container_cmd_test.cc
         inspect_container_response_test.cc
         remove_image_cmd_exec_test.cc
         version_test.cc
