@@ -38,9 +38,9 @@ jobs:
           ln -s "$(brew --prefix llvm)/bin/clang-apply-replacements" "/usr/local/bin/clang-apply-replacements"
       - name: Build CMAKE directory
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
-          cmake --build build
-          cmake --build build -t test
+          CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
+          CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake --build build
+          CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake --build build -t test
 
   build:
     name: "Ubuntu"
@@ -55,6 +55,6 @@ jobs:
           sudo apt-get install build-essential cmake g++-10 gcc-10 libgtest-dev make libssl-dev python3-dev autotools-dev libicu-dev libbz2-dev libboost-all-dev libspdlog-dev nlohmann-json3-dev llvm curl libcurl4-openssl-dev
           ls
           g++ --version
-          cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
-          cmake --build build
-          cmake --build build -t test
+          CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
+          CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake --build build
+          CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake --build build -t test
