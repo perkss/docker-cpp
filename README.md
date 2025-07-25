@@ -18,10 +18,14 @@ Contributions are welcome please see the [Contributing.md](CONTRIBUTING.md).
 ## Build
 
 ```
+cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build 
 cmake --build build
 cmake --build build -t test
 ```
 
+## Ensure Docker Destop
+
+Allow the default Docker socket to be used (requires password). Is enabled if using docker desktop. The `/var/run/docker.sock` is required. 
 
 ## Getting Started
 
