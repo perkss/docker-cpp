@@ -18,7 +18,7 @@ class ExecCreateCmdExec : public AbstrSyncDockerCmdExec<ExecCreateCmd, ExecCreat
   ExecCreateResponse exec(std::shared_ptr<ExecCreateCmd> command) override;
 
  protected:
-  ExecCreateResponse execute(std::shared_ptr<ExecCreateCmd> command);
+  ExecCreateResponse execute(std::shared_ptr<ExecCreateCmd> command) override;
 };
 
 }  // namespace dockercpp::command::exec

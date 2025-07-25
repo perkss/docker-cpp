@@ -3,9 +3,9 @@
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 
-#include <memory>
-
 #include "docker_client_config.hh"
+
+#include <string.h>
 
 namespace dockercpp::test {
 

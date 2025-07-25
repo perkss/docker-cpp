@@ -32,7 +32,8 @@ ExecCreateResponse ExecCreateCmdExec::execute(std::shared_ptr<ExecCreateCmd> com
     }
     requestJson["Privileged"] = command->isPrivileged();
 
-    auto response = webResource.request().post(requestJson.dump());
+    std::string requestStr = requestJson.dump();
+    auto response = webResource.request().post(requestStr);
 
     spdlog::info("converting string {}", response);
 

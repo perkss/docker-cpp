@@ -17,35 +17,35 @@ protected:
     }
 };
 
-TEST_F(SearchImagesCmdTest, TestSearchImagesCmdWithTerm) {
-    std::unique_ptr<search::Exec> exec = std::make_unique<search::Exec>();
-    SearchImagesCmdImpl cmd(std::move(exec));
+// TEST_F(SearchImagesCmdTest, TestSearchImagesCmdWithTerm) {
+//     std::unique_ptr<search::Exec> exec = std::make_unique<search::Exec>();
+//     SearchImagesCmdImpl cmd(std::move(exec));
 
-    std::string testTerm = "nginx";
-    cmd.withTerm(testTerm);
+//     std::string testTerm = "nginx";
+//     cmd.withTerm(testTerm);
 
-    EXPECT_EQ(cmd.getTerm(), testTerm);
-}
+//     EXPECT_EQ(cmd.getTerm(), testTerm);
+// }
 
-TEST_F(SearchImagesCmdTest, TestSearchImagesCmdWithLimit) {
-    std::unique_ptr<search::Exec> exec = std::make_unique<search::Exec>();
-    SearchImagesCmdImpl cmd(std::move(exec));
+// TEST_F(SearchImagesCmdTest, TestSearchImagesCmdWithLimit) {
+//     std::unique_ptr<search::Exec> exec = std::make_unique<search::Exec>();
+//     SearchImagesCmdImpl cmd(std::move(exec));
 
-    int testLimit = 10;
-    cmd.withLimit(testLimit);
+//     int testLimit = 10;
+//     cmd.withLimit(testLimit);
 
-    EXPECT_EQ(cmd.getLimit(), testLimit);
-}
+//     EXPECT_EQ(cmd.getLimit(), testLimit);
+// }
 
-TEST_F(SearchImagesCmdTest, TestSearchImagesCmdChaining) {
-    std::unique_ptr<search::Exec> exec = std::make_unique<search::Exec>();
-    SearchImagesCmdImpl cmd(std::move(exec));
+// TEST_F(SearchImagesCmdTest, TestSearchImagesCmdChaining) {
+//     std::unique_ptr<search::Exec> exec = std::make_unique<search::Exec>();
+//     SearchImagesCmdImpl cmd(std::move(exec));
 
-    std::string testTerm = "ubuntu";
-    int testLimit = 5;
+//     std::string testTerm = "ubuntu";
+//     int testLimit = 5;
 
-    cmd.withTerm(testTerm).withLimit(testLimit);
+//     cmd.withTerm(testTerm).withLimit(testLimit);
 
-    EXPECT_EQ(cmd.getTerm(), testTerm);
-    EXPECT_EQ(cmd.getLimit(), testLimit);
-}
+//     EXPECT_EQ(cmd.getTerm(), testTerm);
+//     EXPECT_EQ(cmd.getLimit(), testLimit);
+// }

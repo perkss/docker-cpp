@@ -8,7 +8,9 @@ add_library(docker_cpp_client
   curl_docker_http_client.cc
   docker_client_config.cc
   events_cmd.cc
+  events_cmd_exec.cc
   exec_create_cmd.cc
+  exec_create_cmd_exec.cc
   exec_start_cmd.cc
   info_cmd.cc
   info_cmd_exec.cc
@@ -36,6 +38,8 @@ add_library(docker_cpp_client
   start_container_cmd_exec.cc
   stop_container_cmd.cc
   stop_container_cmd_exec.cc
+  update_container_cmd_exec.cc
+  update_container_cmd.cc
   version.cc
   version_cmd.cc
   version_cmd_exec.cc

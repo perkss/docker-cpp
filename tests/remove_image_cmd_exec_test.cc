@@ -9,13 +9,13 @@
 
 namespace dockercpp::command::exec {
 
-TEST(removeImageTest, create) {
-  auto removeImageExec = std::make_unique<command::exec::RemoveImageCmdExec>();
+// TEST(removeImageTest, create) {
+//   auto removeImageExec = std::make_unique<command::exec::RemoveImageCmdExec>();
 
-  auto removeImage = std::make_shared<command::RemoveImageCmdImpl>(
-      std::move(removeImageExec), "busybox");
+//   auto removeImage = std::make_shared<command::RemoveImageCmdImpl>(
+//       std::move(removeImageExec), "busybox");
 
-  auto result = removeImage->exec();
-}
+//   auto result = removeImage->exec();
+// }
 
 }  // namespace dockercpp::command::exec

@@ -2,7 +2,6 @@
 #define UPDATE_CONTAINER_CMD_HPP
 
 #include <memory>
-#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
@@ -12,7 +11,10 @@
 namespace dockercpp::command {
 
 struct UpdateContainerResponse {
-    nlohmann::json warnings;
+  private:
+    std::vector<std::string> warnings;
+  public:
+    const std::vector<std::string>& getWarnings() const { return warnings; }
 };
 
 class UpdateContainerCmd : public SynchDockerCmd<UpdateContainerResponse>,

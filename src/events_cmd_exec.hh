@@ -6,7 +6,6 @@
 
 #include "abstr_sync_docker_cmd_exec.hh"
 #include "events_cmd.hh"
-#include "webtarget.hh"
 
 namespace dockercpp::command::exec {
 
@@ -18,7 +17,7 @@ class EventsCmdExec : public AbstrSyncDockerCmdExec<EventsCmd, std::vector<Docke
   std::vector<DockerEvent> exec(std::shared_ptr<EventsCmd> command) override;
 
  protected:
-  std::vector<DockerEvent> execute(std::shared_ptr<EventsCmd> command);
+  std::vector<DockerEvent> execute(std::shared_ptr<EventsCmd> command) override;
 };
 
 }  // namespace dockercpp::command::exec

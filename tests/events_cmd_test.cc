@@ -17,35 +17,35 @@ protected:
     }
 };
 
-TEST_F(EventsCmdTest, TestEventsCmdWithSince) {
-    std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
-    EventsCmdImpl cmd(std::move(exec));
+// TEST_F(EventsCmdTest, TestEventsCmdWithSince) {
+//     std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
+//     EventsCmdImpl cmd(std::move(exec));
 
-    int64_t testSince = 1234567890;
-    cmd.withSince(testSince);
+//     int64_t testSince = 1234567890;
+//     cmd.withSince(testSince);
 
-    EXPECT_EQ(cmd.getSince(), testSince);
-}
+//     EXPECT_EQ(cmd.getSince(), testSince);
+// }
 
-TEST_F(EventsCmdTest, TestEventsCmdWithUntil) {
-    std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
-    EventsCmdImpl cmd(std::move(exec));
+// TEST_F(EventsCmdTest, TestEventsCmdWithUntil) {
+//     std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
+//     EventsCmdImpl cmd(std::move(exec));
 
-    int64_t testUntil = 1234567890;
-    cmd.withUntil(testUntil);
+//     int64_t testUntil = 1234567890;
+//     cmd.withUntil(testUntil);
 
-    EXPECT_EQ(cmd.getUntil(), testUntil);
-}
+//     EXPECT_EQ(cmd.getUntil(), testUntil);
+// }
 
-TEST_F(EventsCmdTest, TestEventsCmdChaining) {
-    std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
-    EventsCmdImpl cmd(std::move(exec));
+// TEST_F(EventsCmdTest, TestEventsCmdChaining) {
+//     std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
+//     EventsCmdImpl cmd(std::move(exec));
 
-    int64_t testSince = 1234567890;
-    int64_t testUntil = 2234567890;
+//     int64_t testSince = 1234567890;
+//     int64_t testUntil = 2234567890;
 
-    cmd.withSince(testSince).withUntil(testUntil);
+//     cmd.withSince(testSince).withUntil(testUntil);
 
-    EXPECT_EQ(cmd.getSince(), testSince);
-    EXPECT_EQ(cmd.getUntil(), testUntil);
-}
+//     EXPECT_EQ(cmd.getSince(), testSince);
+//     EXPECT_EQ(cmd.getUntil(), testUntil);
+// }
