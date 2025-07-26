@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 #include <memory>
+#include "events_cmd_exec.hh"
 
 #include "events_cmd.hh"
-#include "docker_client.hh"
 
-using namespace dockercpp::command;
+namespace dockercpp::command::exec::test {
 
 class EventsCmdTest : public ::testing::Test {
 protected:
@@ -17,35 +17,44 @@ protected:
     }
 };
 
-// TEST_F(EventsCmdTest, TestEventsCmdWithSince) {
-//     std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
-//     EventsCmdImpl cmd(std::move(exec));
+TEST_F(EventsCmdTest, TestEventsCmdWithSince) {
+    auto eventsExec = std::make_unique<command::exec::EventsCmdExec>();
 
-//     int64_t testSince = 1234567890;
-//     cmd.withSince(testSince);
+    auto cmd = std::make_shared<command::EventsCmdImpl>(std::move(eventsExec));
+ 
+    int64_t testSince = 1234567890;
+    cmd->withSince(testSince);
 
-//     EXPECT_EQ(cmd.getSince(), testSince);
-// }
+    EXPECT_EQ(cmd->getSince(), testSince);
+}
 
-// TEST_F(EventsCmdTest, TestEventsCmdWithUntil) {
-//     std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
-//     EventsCmdImpl cmd(std::move(exec));
+TEST_F(EventsCmdTest, TestEventsCmdWithUntil) {
+    auto eventsExec = std::make_unique<command::exec::EventsCmdExec>();
 
-//     int64_t testUntil = 1234567890;
-//     cmd.withUntil(testUntil);
+    auto cmd = std::make_shared<command::EventsCmdImpl>(std::move(eventsExec));
+ 
+   
+    int64_t testUntil = 1234567890;
+    cmd->withUntil(testUntil);
 
-//     EXPECT_EQ(cmd.getUntil(), testUntil);
-// }
+    EXPECT_EQ(cmd->getUntil(), testUntil);
+}
 
-// TEST_F(EventsCmdTest, TestEventsCmdChaining) {
-//     std::unique_ptr<events::Exec> exec = std::make_unique<events::Exec>();
-//     EventsCmdImpl cmd(std::move(exec));
+TEST_F(EventsCmdTest, TestEventsCmdChaining) {
+   auto eventsExec = std::make_unique<command::exec::EventsCmdExec>();
 
-//     int64_t testSince = 1234567890;
-//     int64_t testUntil = 2234567890;
+    auto cmd = std::make_shared<command::EventsCmdImpl>(std::move(eventsExec));
+ 
+   
+    int64_t testSince = 1234567890;
+    int64_t testUntil = 2234567890;
 
-//     cmd.withSince(testSince).withUntil(testUntil);
+    cmd->withSince(testSince).withUntil(testUntil);
 
-//     EXPECT_EQ(cmd.getSince(), testSince);
-//     EXPECT_EQ(cmd.getUntil(), testUntil);
-// }
+    EXPECT_EQ(cmd->getSince(), testSince);
+    EXPECT_EQ(cmd->getUntil(), testUntil);
+}
+
+
+}
+

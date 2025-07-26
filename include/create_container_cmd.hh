@@ -17,6 +17,10 @@ struct CreateContainerRequest {
   std::vector<std::string> cmd;
 };
 
+struct HostConfig {
+  std::string hostName;
+};
+
 class CreateContainerCmd
     : public SynchDockerCmd<model::CreateContainerResponse>,
       public std::enable_shared_from_this<CreateContainerCmd> {
