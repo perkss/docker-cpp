@@ -3,7 +3,6 @@
 
 #include "update_container_cmd.hh"
 #include "update_container_cmd_exec.hh"
-#include "docker_client.hh"
 
 using namespace dockercpp::command;
 
