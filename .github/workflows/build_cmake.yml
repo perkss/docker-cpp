@@ -40,6 +40,7 @@ jobs:
           colima-network-address: false
       - name: Log Docker and Colima versions
         run: |
+          sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
           echo "Colima version: ${{ steps.setup-docker.outputs.colima-version }}"
           echo "Docker client version: ${{ steps.setup-docker.outputs.docker-client-version }}"
       - name: Verify Docker
