@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <utility>
 
 namespace dockercpp::core {
 
@@ -15,6 +16,8 @@ class InvocationBuilder {
   std::string post(std::string &json);
 
   bool deletehttp();
+  
+  std::pair<std::string, long> deletehttp_with_code();
 
  private:
   std::string m_path;

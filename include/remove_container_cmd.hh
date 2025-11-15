@@ -14,8 +14,9 @@ class RemoveContainerCmd
       public std::enable_shared_from_this<RemoveContainerCmd> {
  public:
   virtual void withContainerId(std::string id) = 0;
-
   virtual std::string getContainerId() = 0;
+  virtual bool hasForceEnabled() const = 0;
+  virtual RemoveContainerCmd& withForce(bool force) = 0;
 
   ~RemoveContainerCmd() {}
 
@@ -43,11 +44,18 @@ class RemoveContainerCmdImpl
   void close() override {}
 
   void withContainerId(std::string id) override;
-
   std::string getContainerId() override;
+  bool hasForceEnabled() const override { return m_force; }
+  RemoveContainerCmd& withForce(bool force) override {
+    m_force = force;
+    return *this;
+  }
 
   ~RemoveContainerCmdImpl() {}
-};
-}  // namespace dockercpp::command
+
+private:
+  bool m_force{false};
+};  // namespace dockercpp::command
+}
 
 #endif /* INCLUDE_REMOVE_CONTAINER_CMD_HPP */

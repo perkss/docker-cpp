@@ -2,6 +2,7 @@
 #define DOCKER_CLIENT_H
 
 #include "create_container_cmd.hh"
+#include "events_cmd.hh"
 #include "info_cmd.hh"
 #include "ping_cmd.hh"
 #include "pull_image_cmd.hh"
@@ -43,6 +44,7 @@ class DockerClient {
 
   std::shared_ptr<command::RemoveContainerCmd> removeContainerCmd(std::string id);
 
+  std::shared_ptr<command::EventsCmd> eventsCmd();
 };
 
 };  // namespace dockercpp

@@ -12,12 +12,21 @@ std::string RemoveImageCmdImpl::exec() {
 
 std::string RemoveImageCmdImpl::getImageId() { return m_id; }
 
-bool RemoveImageCmdImpl::hasForcedEnabled() { return false; }
+bool m_force{false};
+bool m_noPrune{false};
 
-bool RemoveImageCmdImpl::hasNoPruneEnabled() { return false; }
+bool RemoveImageCmdImpl::hasForcedEnabled() { return m_force; }
 
-void RemoveImageCmdImpl::withForce(bool force) {}
+bool RemoveImageCmdImpl::hasNoPruneEnabled() { return m_noPrune; }
 
-void RemoveImageCmdImpl::withNoPrune(bool force) {}
+RemoveImageCmd& RemoveImageCmdImpl::withForce(bool force) { 
+    m_force = force;
+    return *this;
+}
+
+RemoveImageCmd& RemoveImageCmdImpl::withNoPrune(bool force) {
+    m_noPrune = force;
+    return *this;
+}
 
 }  // namespace dockercpp::command

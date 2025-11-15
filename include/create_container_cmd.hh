@@ -2,6 +2,7 @@
 #define INCLUDE_CREATE_CONTAINER_CMD_HPP
 
 #include <memory>
+#include <map>
 #include <nlohmann/json.hpp>
 
 #include "abstr_sync_docker_cmd_exec.hh"
@@ -15,6 +16,11 @@ struct CreateContainerRequest {
   std::string hostName;
   std::string name;
   std::vector<std::string> cmd;
+  std::map<std::string, std::string> labels;
+};
+
+struct HostConfig {
+  std::string hostName;
 };
 
 class CreateContainerCmd
@@ -28,6 +34,10 @@ class CreateContainerCmd
   CreateContainerCmd& withCmd(const std::string& cmd);
 
   CreateContainerCmd& withCmd(const std::vector<std::string>& cmd);
+
+  CreateContainerCmd& withLabels(const std::map<std::string, std::string>& labels);
+
+  CreateContainerCmd& withLabel(const std::string& key, const std::string& value);
 
   CreateContainerRequest getRequest() { return request; }
 

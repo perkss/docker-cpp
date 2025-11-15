@@ -7,6 +7,11 @@ add_library(docker_cpp_client
   docker_object.cc
   curl_docker_http_client.cc
   docker_client_config.cc
+  events_cmd.cc
+  events_cmd_exec.cc
+  exec_create_cmd.cc
+  exec_create_cmd_exec.cc
+  exec_start_cmd.cc
   info_cmd.cc
   info_cmd_exec.cc
   info.cc
@@ -20,6 +25,9 @@ add_library(docker_cpp_client
   ping_cmd.cc
   pull_image_cmd.cc
   pull_image_cmd_exec.cc
+  search_images_cmd.cc
+  stats_container_cmd.cc
+  update_container_cmd.cc
   webtarget.cc
   abstr_sync_docker_cmd_exec.cc
   remove_container_cmd.cc
@@ -30,6 +38,8 @@ add_library(docker_cpp_client
   start_container_cmd_exec.cc
   stop_container_cmd.cc
   stop_container_cmd_exec.cc
+  update_container_cmd_exec.cc
+  update_container_cmd.cc
   version.cc
   version_cmd.cc
   version_cmd_exec.cc

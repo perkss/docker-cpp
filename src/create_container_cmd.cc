@@ -25,6 +25,18 @@ CreateContainerCmd& CreateContainerCmd::withCmd(
   return *this;
 }
 
+CreateContainerCmd& CreateContainerCmd::withLabels(
+    const std::map<std::string, std::string>& labels) {
+  request.labels = labels;
+  return *this;
+}
+
+CreateContainerCmd& CreateContainerCmd::withLabel(
+    const std::string& key, const std::string& value) {
+  request.labels[key] = value;
+  return *this;
+}
+
 CreateContainerCmdImpl::CreateContainerCmdImpl(
     std::unique_ptr<createcontainer::Exec> exec, std::string image)
     : AbstrDockerCmd<CreateContainerCmd, model::CreateContainerResponse>(
@@ -46,6 +58,10 @@ void to_json(nlohmann::json& j,
 
   if (!createContainerRequest.cmd.empty()) {
     j["Cmd"] = createContainerRequest.cmd;
+  }
+
+  if (!createContainerRequest.labels.empty()) {
+    j["Labels"] = createContainerRequest.labels;
   }
 }
 

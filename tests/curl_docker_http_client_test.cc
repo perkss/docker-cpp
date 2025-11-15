@@ -3,20 +3,13 @@
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 
-#include "../src/version_cmd_exec.hh"
 #include "docker_client.hh"
 #include "info.hh"
-#include "ping_cmd.hh"
-#include "ping_cmd_exec.hh"
-#include "remove_image_cmd.hh"
 #include "version.hh"
-#include "version_cmd.hh"
 
 namespace dockercpp::transport::test {
 
 TEST(Curl_Docker_Client_Test, ping_ok) {
-  spdlog::info("running boost beast test");
-
   dockercpp::transport::http::CurlDockerHttpClient client =
       dockercpp::transport::http::CurlDockerHttpClient::make()
           .withDockerHost("")
@@ -129,7 +122,7 @@ TEST(Curl_Docker_Client_Test, start_and_stop_container) {
   auto deletecontainer = dockerclient.removeContainerCmd(response.id)->exec();
 
   spdlog::info("delete");
-  auto deleteimage = dockerclient.removeImageCmd("busybox")->exec();
+  auto deleteimage = dockerclient.removeImageCmd("busybox:1.36")->exec();
 }
 
 }  // namespace dockercpp::transport::test

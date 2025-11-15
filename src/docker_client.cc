@@ -20,6 +20,7 @@
 #include "stop_container_cmd_exec.hh"
 #include "version_cmd.hh"
 #include "version_cmd_exec.hh"
+#include "events_cmd_exec.hh"
 
 namespace dockercpp {
 
@@ -89,6 +90,11 @@ std::shared_ptr<command::RemoveContainerCmd> DockerClient::removeContainerCmd(
     std::string id) {
   return std::make_shared<command::RemoveContainerCmdImpl>(
       std::move(std::make_unique<command::exec::RemoveContainerCmdExec>()), id);
+}
+
+std::shared_ptr<command::EventsCmd> DockerClient::eventsCmd() {
+  return std::make_shared<command::EventsCmdImpl>(
+      std::move(std::make_unique<command::exec::EventsCmdExec>()));
 }
 
 }  // namespace dockercpp

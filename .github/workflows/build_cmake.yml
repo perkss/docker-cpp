@@ -11,10 +11,10 @@ env:
 
 jobs:
   macos-native-x86_64:
-    name: 'macOS 13'
+    name: 'macos-15-intel'
     # Use latest image, but hardcode version to avoid silent upgrades (and breaks).
     # See: https://github.com/actions/runner-images#available-images.
-    runs-on: macos-13  # Use M1 once available https://github.com/github/roadmap/issues/528
+    runs-on: macos-15-intel  # Use M1 once available https://github.com/github/roadmap/issues/528
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,20 +22,30 @@ jobs:
         run: clang --version
       - name: cmake version
         run: cmake -version
-      - name: install docker
-        run: |
-            brew install colima docker
-            colima start
-            sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
-      - name: docker version
-        run: docker ps
-
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
       - name: Install Homebrew packages
         run: |
-          brew install cmake boost spdlog nlohmann-json llvm curl
+          # Install required build-time packages but let the setup-docker action manage Colima/Docker
+          brew install cmake boost spdlog nlohmann-json llvm curl ninja
           ln -s "$(brew --prefix llvm)/bin/clang-format" "/usr/local/bin/clang-format"
           ln -s "$(brew --prefix llvm)/bin/clang-tidy" "/usr/local/bin/clang-tidy"
           ln -s "$(brew --prefix llvm)/bin/clang-apply-replacements" "/usr/local/bin/clang-apply-replacements"
+      - name: Setup Docker on macOS
+        id: setup-docker
+        uses: douglascamata/setup-docker-macos-action@v1
+        with:
+          # Pass Colima startup options (CPU and memory) via the additional options input
+          colima-additional-options: '--cpu 4 --memory 8'
+          colima-network-address: false
+      - name: Log Docker and Colima versions
+        run: |
+          sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
+          echo "Colima version: ${{ steps.setup-docker.outputs.colima-version }}"
+          echo "Docker client version: ${{ steps.setup-docker.outputs.docker-client-version }}"
+      - name: Verify Docker
+        run: |
+          docker ps || { echo "Docker not responding, waiting..."; sleep 10; docker ps; }
       - name: Build CMAKE directory
         run: |
           CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
@@ -46,13 +56,13 @@ jobs:
     name: "Ubuntu"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Checkout submodules
         run: git submodule update --init --recursive
       - name: Create build directory and run CMake
         run: |
           sudo apt-get -y update
-          sudo apt-get install build-essential cmake g++-10 gcc-10 libgtest-dev make libssl-dev python3-dev autotools-dev libicu-dev libbz2-dev libboost-all-dev libspdlog-dev nlohmann-json3-dev llvm curl libcurl4-openssl-dev
+          sudo apt-get install -y build-essential cmake g++-10 gcc-10 libgtest-dev make libssl-dev python3-dev autotools-dev libicu-dev libbz2-dev libboost-all-dev libspdlog-dev nlohmann-json3-dev llvm curl libcurl4-openssl-dev ninja-build
           ls
           g++ --version
           CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
