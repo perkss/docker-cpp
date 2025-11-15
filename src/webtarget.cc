@@ -46,6 +46,12 @@ std::string InvocationBuilder::post(std::string& json) {
 }
 
 bool InvocationBuilder::deletehttp() {
+  auto [response, code] = deletehttp_with_code();
+  return code == 200;
+}
+
+std::pair<std::string, long> InvocationBuilder::deletehttp_with_code() {
+  spdlog::info("Delete requested");
   transport::http::Request request =
       transport::http::Request::make()
           .withMethod(transport::http::Request::Method::DELETE)
@@ -57,10 +63,8 @@ bool InvocationBuilder::deletehttp() {
           .withConnectTimeout(10)
           .withReadTimeout(10);
 
-  // TODO sort return type
-  client.execute(request);
-
-  return true;
+  auto response = client.execute(request);
+  return {response.getBody(), response.getStatusCode()};
 }
 
 InvocationBuilder WebTarget::request() {

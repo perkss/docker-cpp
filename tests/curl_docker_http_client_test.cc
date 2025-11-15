@@ -122,7 +122,7 @@ TEST(Curl_Docker_Client_Test, start_and_stop_container) {
   auto deletecontainer = dockerclient.removeContainerCmd(response.id)->exec();
 
   spdlog::info("delete");
-  auto deleteimage = dockerclient.removeImageCmd("busybox")->exec();
+  auto deleteimage = dockerclient.removeImageCmd("busybox:1.36")->exec();
 }
 
 }  // namespace dockercpp::transport::test

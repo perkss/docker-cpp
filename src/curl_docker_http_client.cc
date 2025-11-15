@@ -94,20 +94,23 @@ http::Response deletecurl(Request &request) {
   char *url;
   long response_code;
   double elapsed;
+
+  curl_easy_perform(curl);
+  
   curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
   curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &elapsed);
   curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
 
-  curl_easy_perform(curl);
   curl_easy_cleanup(curl);
   curl = nullptr;
 
   spdlog::info("Response is {}", response_string);
   spdlog::info("Response header is {}", header_string);
+  spdlog::info("Response code {}", response_code);
 
   http::Response response(response_code,
                           std::unordered_map<std::string, std::string>(),
-                          std::string{});
+                          response_string);
   return response;
 }
 
@@ -153,11 +156,13 @@ http::Response postcurl(Request &request) {
     char *url;
     long response_code;
     double elapsed;
+
+    curl_easy_perform(curl);
+    
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
     curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &elapsed);
     curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
 
-    curl_easy_perform(curl);
     curl_easy_cleanup(curl);
     curl = nullptr;
     spdlog::info("Response is {}", response_string);
