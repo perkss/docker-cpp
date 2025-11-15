@@ -35,7 +35,7 @@ class StartContainerCmdImpl : public StartContainerCmd,
 
   std::string getContainerId() override;
 
-  ~StartContainerCmdImpl() {}
+  ~StartContainerCmdImpl() = default;
 
  private:
   std::string m_containerId;

@@ -29,9 +29,10 @@ class AbstrDockerCmd : SynchDockerCmd<RES_T> {
       : m_execution(std::move(execution)){};
 
   RES_T exec() override {
+    return RES_T();
   }
 
-  ~AbstrDockerCmd() {}
+  ~AbstrDockerCmd() = default;
 
  protected:
   std::unique_ptr<exec::DockerCmdSyncExec<CMD_T, RES_T>> m_execution;

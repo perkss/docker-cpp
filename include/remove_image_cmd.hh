@@ -18,9 +18,9 @@ class RemoveImageCmd : public SynchDockerCmd<std::string>,
 
   virtual bool hasNoPruneEnabled() = 0;
 
-  virtual void withForce(bool force) = 0;
+  virtual RemoveImageCmd& withForce(bool force) = 0;
 
-  virtual void withNoPrune(bool force) = 0;
+  virtual RemoveImageCmd& withNoPrune(bool force) = 0;
 
   ~RemoveImageCmd() {}
 };
@@ -44,9 +44,9 @@ class RemoveImageCmdImpl : public RemoveImageCmd,
 
   bool hasNoPruneEnabled() override;
 
-  void withForce(bool force) override;
+  RemoveImageCmd& withForce(bool force) override;
 
-  void withNoPrune(bool force) override;
+  RemoveImageCmd& withNoPrune(bool force) override;
 
   std::string exec() override;
 

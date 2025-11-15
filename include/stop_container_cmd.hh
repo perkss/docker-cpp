@@ -33,7 +33,7 @@ class StopContainerCmdImpl : public StopContainerCmd,
 
   std::string getContainerId() override;
 
-  ~StopContainerCmdImpl() {}
+  ~StopContainerCmdImpl() = default;
 
  private:
   std::string m_containerId;
