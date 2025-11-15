@@ -24,20 +24,34 @@ jobs:
         run: cmake -version
       - name: Checkout submodules
         run: git submodule update --init --recursive
-      - name: install docker
-        run: |
-            brew install colima docker
-            colima start
-            sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
-      - name: docker version
-        run: docker ps
-
       - name: Install Homebrew packages
         run: |
-          brew install cmake boost spdlog nlohmann-json llvm curl ninja
+          brew install cmake boost spdlog nlohmann-json llvm curl ninja colima docker
           ln -s "$(brew --prefix llvm)/bin/clang-format" "/usr/local/bin/clang-format"
           ln -s "$(brew --prefix llvm)/bin/clang-tidy" "/usr/local/bin/clang-tidy"
           ln -s "$(brew --prefix llvm)/bin/clang-apply-replacements" "/usr/local/bin/clang-apply-replacements"
+      - name: Start Colima with retry
+        run: |
+          for i in {1..3}; do
+            echo "Attempt $i to start Colima..."
+            if colima start --cpu 4 --memory 8 2>&1; then
+              echo "Colima started successfully"
+              break
+            fi
+            if [ $i -lt 3 ]; then
+              echo "Waiting before retry..."
+              sleep 10
+              colima delete --force 2>/dev/null || true
+            fi
+          done
+      - name: Setup Docker socket link
+        run: |
+          mkdir -p /var/run
+          sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock 2>/dev/null || true
+          sleep 2
+      - name: Verify Docker
+        run: |
+          docker ps || { echo "Docker not responding, waiting..."; sleep 10; docker ps; }
       - name: Build CMAKE directory
         run: |
           CMAKE_POLICY_VERSION_MINIMUM=3.5 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
