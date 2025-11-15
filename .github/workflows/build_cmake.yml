@@ -10,11 +10,11 @@ env:
   CTEST_OUTPUT_ON_FAILURE: 1
 
 jobs:
-  macos-native-arm64:
-    name: 'macOS 15'
+  macos-native-x86_64:
+    name: 'macos-15-intel'
     # Use latest image, but hardcode version to avoid silent upgrades (and breaks).
     # See: https://github.com/actions/runner-images#available-images.
-    runs-on: macos-15  # Use M1 once available https://github.com/github/roadmap/issues/528
+    runs-on: macos-15-intel  # Use M1 once available https://github.com/github/roadmap/issues/528
     steps:
       - name: Checkout
         uses: actions/checkout@v4
