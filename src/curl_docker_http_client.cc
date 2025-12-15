@@ -139,12 +139,20 @@ http::Response postcurl(Request &request) {
     }
 
     spdlog::info("About to send post: {}", request.body().c_str());
+    // Ensure binary-safe upload for arbitrary body contents (e.g., tar archives)
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, fields.c_str());
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE_LARGE,
+             static_cast<curl_off_t>(fields.size()));
 
     curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
-    headers = curl_slist_append(headers, "Content-Type: application/json");
-    headers = curl_slist_append(headers, "charset: utf-8");
+    // If posting a tar archive for image load, use application/x-tar
+    if (request.path().find("/images/load") != std::string::npos) {
+      headers = curl_slist_append(headers, "Content-Type: application/x-tar");
+    } else {
+      headers = curl_slist_append(headers, "Content-Type: application/json");
+      headers = curl_slist_append(headers, "charset: utf-8");
+    }
 
     std::string response_string;
     std::string header_string;

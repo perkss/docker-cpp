@@ -21,6 +21,8 @@
 #include "version_cmd.hh"
 #include "version_cmd_exec.hh"
 #include "events_cmd_exec.hh"
+#include "load_image_cmd.hh"
+#include "load_image_cmd_exec.hh"
 
 namespace dockercpp {
 
@@ -67,6 +69,12 @@ std::shared_ptr<command::PullImageCmd> DockerClient::pullImageCmd(
   return std::make_shared<command::PullImageCmdImpl>(
       std::move(std::make_unique<command::exec::PullImageCmdExec>()),
       repository);
+}
+
+std::shared_ptr<command::LoadImageCmd> DockerClient::loadImageCmd(
+    std::string tarContents) {
+  return std::make_shared<command::LoadImageCmdImpl>(
+      std::move(std::make_unique<command::exec::LoadImageCmdExec>()), tarContents);
 }
 
 std::shared_ptr<command::InfoCmd> DockerClient::infoCmd() {

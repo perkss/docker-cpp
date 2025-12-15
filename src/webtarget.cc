@@ -45,6 +45,24 @@ std::string InvocationBuilder::post(std::string& json) {
   return client.execute(request).getBody();
 }
 
+std::pair<std::string, long> InvocationBuilder::post_with_code(std::string& body) {
+  spdlog::info("post with code requested");
+  transport::http::Request request =
+      transport::http::Request::make()
+          .withMethod(transport::http::Request::Method::POST)
+          .withBody(body)
+          .withPath(m_path);
+
+  dockercpp::transport::http::CurlDockerHttpClient client =
+      dockercpp::transport::http::CurlDockerHttpClient::make()
+          .withDockerHost("")
+          .withConnectTimeout(10)
+          .withReadTimeout(10);
+
+  auto response = client.execute(request);
+  return {response.getBody(), response.getStatusCode()};
+}
+
 bool InvocationBuilder::deletehttp() {
   auto [response, code] = deletehttp_with_code();
   return code == 200;

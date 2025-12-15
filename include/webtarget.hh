@@ -14,6 +14,7 @@ class InvocationBuilder {
   std::string get();
 
   std::string post(std::string &json);
+  std::pair<std::string, long> post_with_code(std::string &body);
 
   bool deletehttp();
   
