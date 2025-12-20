@@ -29,6 +29,8 @@ add_library(docker_cpp_client
   stats_container_cmd.cc
   update_container_cmd.cc
   webtarget.cc
+  load_image_cmd.cc
+  load_image_cmd_exec.cc
   abstr_sync_docker_cmd_exec.cc
   remove_container_cmd.cc
   remove_container_cmd_exec.cc
