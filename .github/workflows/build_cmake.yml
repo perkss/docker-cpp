@@ -33,7 +33,7 @@ jobs:
           ln -s "$(brew --prefix llvm)/bin/clang-apply-replacements" "/usr/local/bin/clang-apply-replacements"
       - name: Setup Docker on macOS
         id: setup-docker
-        uses: douglascamata/setup-docker-macos-action@v2
+        uses: douglascamata/setup-docker-macos-action@v1
         with:
           # Pass Colima startup options (CPU and memory) via the additional options input
           colima-additional-options: '--cpu 4 --memory 8'
