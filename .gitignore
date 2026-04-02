@@ -33,9 +33,17 @@
 
 # CMake
 /build
+build-*/
+cmake-build-*/
 
-# Clangd
-.cache
-compile_commands.json
+# Ninja build artifacts
+.ninja_log
+.ninja_deps
+
+# CMake cache and generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
 
 .idea/
