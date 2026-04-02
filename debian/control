@@ -1,0 +1,37 @@
+Source: docker-cpp
+Section: libs
+Priority: optional
+Maintainer: docker-cpp Contributors <you@example.com>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 4.2.1),
+               g++ (>= 9),
+               libboost-all-dev,
+               libcurl4-openssl-dev,
+               libspdlog-dev,
+               nlohmann-json3-dev,
+               ninja-build
+Standards-Version: 4.6.1
+Homepage: https://github.com/docker-cpp/docker-cpp
+Vcs-Git: https://github.com/docker-cpp/docker-cpp.git
+Vcs-Browser: https://github.com/docker-cpp/docker-cpp
+
+Package: libdocker-cpp0
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: Docker Client for C++ - shared library
+ A C++ client library for executing Docker commands and managing containers,
+ images, and networks programmatically.
+
+Package: libdocker-cpp-dev
+Section: libdevel
+Architecture: any
+Depends: libdocker-cpp0 (= ${binary:Version}),
+         ${misc:Depends},
+         libboost-all-dev,
+         libcurl4-openssl-dev,
+         libspdlog-dev,
+         nlohmann-json3-dev
+Description: Docker Client for C++ - development headers
+ Development headers and CMake configuration files for building applications
+ that use the Docker C++ client library.

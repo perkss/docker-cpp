@@ -23,6 +23,43 @@ cmake --build build
 cmake --build build -t test
 ```
 
+## Installation
+
+### From Package Manager
+
+**macOS (Homebrew)**
+```bash
+brew install docker-cpp
+```
+
+**Ubuntu/Debian**
+```bash
+sudo apt-get install libdocker-cpp-dev
+```
+
+### From Source
+
+```bash
+# Configure (Release build)
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -G Ninja -S . -B build
+
+# Build
+cmake --build build
+
+# Install
+sudo cmake --install build
+```
+
+### Verify Installation
+
+```bash
+# Using pkg-config
+pkg-config --cflags --libs docker_cpp
+
+# Using CMake (in your project)
+find_package(docker_cpp REQUIRED)
+```
+
 ## Ensure Docker Destop
 
 Allow the default Docker socket to be used (requires password). Is enabled if using docker desktop. The `/var/run/docker.sock` is required. 

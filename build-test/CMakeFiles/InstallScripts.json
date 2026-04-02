@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/Stuart/Documents/Programming/C++/docker-cpp/build-test/cmake_install.cmake",
+		"/Users/Stuart/Documents/Programming/C++/docker-cpp/build-test/src/cmake_install.cmake",
+		"/Users/Stuart/Documents/Programming/C++/docker-cpp/build-test/_deps/json-build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

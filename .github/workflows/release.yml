@@ -1,0 +1,131 @@
+name: Release Package Build
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  CMAKE_VERSION: 4.2.1
+  NINJA_VERSION: 1.11.1
+  BUILD_TYPE: Release
+
+jobs:
+  build-release:
+    name: "Build & Package Release"
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Tag: v${VERSION}"
+      
+      - name: Install build dependencies
+        run: |
+          sudo apt-get -y update
+          sudo apt-get install -y build-essential cmake g++-10 gcc-10 make libssl-dev python3-dev autotools-dev libicu-dev libbz2-dev libboost-all-dev libspdlog-dev nlohmann-json3-dev curl libcurl4-openssl-dev ninja-build debhelper devscripts fakeroot lintian
+          pip install --upgrade cmake
+      
+      - name: Build Release binary
+        run: |
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -G Ninja -S . -B build
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build
+      
+      - name: Create source tarball
+        run: |
+          mkdir -p release-src
+          cp -r include src CMakeLists.txt debian scripts docs release-src/
+          tar -czf docker-cpp-${{ steps.version.outputs.VERSION }}.tar.gz -C release-src .
+          ls -lh docker-cpp-*.tar.gz
+      
+      - name: Build Debian packages
+        run: |
+          # Create a clean build directory for debuild
+          mkdir -p debian-build
+          cd debian-build
+          tar -xzf ../docker-cpp-${{ steps.version.outputs.VERSION }}.tar.gz
+          
+          # Run debuild to create .deb packages
+          debuild -us -uc -b 2>&1 | tee build.log
+      
+      - name: Collect .deb artifacts
+        run: |
+          mkdir -p artifacts
+          cp debian-build/../*.deb artifacts/ 2>/dev/null || true
+          ls -lh artifacts/
+      
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          release_name: Release v${{ steps.version.outputs.VERSION }}
+          body: |
+            ## docker-cpp v${{ steps.version.outputs.VERSION }}
+            
+            ### Installation
+            
+            **Ubuntu/Debian:**
+            ```bash
+            sudo dpkg -i libdocker-cpp0_${{ steps.version.outputs.VERSION }}-1_*.deb
+            sudo dpkg -i libdocker-cpp-dev_${{ steps.version.outputs.VERSION }}-1_*.deb
+            ```
+            
+            **macOS (Homebrew):**
+            ```bash
+            brew tap docker-cpp/homebrew-docker-cpp
+            brew install docker-cpp
+            ```
+            
+            ### Files
+            - `docker-cpp-${{ steps.version.outputs.VERSION }}.tar.gz` - Source tarball
+            - `libdocker-cpp0_${{ steps.version.outputs.VERSION }}-1_*.deb` - Runtime library
+            - `libdocker-cpp-dev_${{ steps.version.outputs.VERSION }}-1_*.deb` - Development files
+            
+            For more details, see [PACKAGING.md](docs/PACKAGING.md).
+          draft: false
+          prerelease: false
+      
+      - name: Upload source tarball
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: docker-cpp-${{ steps.version.outputs.VERSION }}.tar.gz
+          asset_name: docker-cpp-${{ steps.version.outputs.VERSION }}.tar.gz
+          asset_content_type: application/gzip
+      
+      - name: Upload .deb artifacts to release
+        run: |
+          for deb in artifacts/*.deb; do
+            if [ -f "$deb" ]; then
+              ASSET_NAME=$(basename "$deb")
+              echo "Uploading $ASSET_NAME"
+              # Upload using curl since upload-release-asset doesn't handle multiple files well
+              curl --data-binary @"$deb" \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Content-Type: application/octet-stream" \
+                "${{ steps.create_release.outputs.upload_url }}?name=${ASSET_NAME}"
+            fi
+          done
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-artifacts
+          path: |
+            artifacts/
+            debian-build/build.log
+          retention-days: 30

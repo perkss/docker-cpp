@@ -1,0 +1,11 @@
+prefix=/usr/local
+libdir=
+includedir=
+
+Name: docker-cpp
+Description: Docker Client for C++
+Version: 0.1.0
+Requires: libcurl
+Libs: -L${libdir} -ldocker_cpp_client
+Libs.private: -lpthread
+Cflags: -I${includedir}

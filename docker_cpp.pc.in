@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Name: docker-cpp
+Description: Docker Client for C++
+Version: @DOCKER_CPP_VERSION_STRING@
+Requires: libcurl
+Libs: -L${libdir} -ldocker_cpp_client
+Libs.private: -lpthread
+Cflags: -I${includedir}

@@ -33,7 +33,7 @@ jobs:
           ln -s "$(brew --prefix llvm)/bin/clang-apply-replacements" "/usr/local/bin/clang-apply-replacements"
       - name: Setup Docker on macOS
         id: setup-docker
-        uses: douglascamata/setup-docker-macos-action@v1
+        uses: douglascamata/setup-docker-macos-action@v2
         with:
           # Pass Colima startup options (CPU and memory) via the additional options input
           colima-additional-options: '--cpu 4 --memory 8'
@@ -53,7 +53,7 @@ jobs:
           CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build -t test
 
   build:
-    name: "Ubuntu"
+    name: "Ubuntu Debug"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -69,3 +69,51 @@ jobs:
           CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
           CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build
           CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build -t test
+
+  ubuntu-release:
+    name: "Ubuntu Release"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      - name: Create build directory and build Release
+        run: |
+          sudo apt-get -y update
+          sudo apt-get install -y build-essential cmake g++-10 gcc-10 libgtest-dev make libssl-dev python3-dev autotools-dev libicu-dev libbz2-dev libboost-all-dev libspdlog-dev nlohmann-json3-dev llvm curl libcurl4-openssl-dev ninja-build
+          pip install --upgrade cmake
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -G Ninja -S . -B build
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build
+      - name: Create install directory
+        run: |
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --install build --prefix install
+      - name: Upload Release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-release-artifacts
+          path: install/
+          retention-days: 7
+
+  macos-release-x86_64:
+    name: "macOS Release (Intel)"
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      - name: Install Homebrew packages
+        run: |
+          brew install cmake boost spdlog nlohmann-json llvm curl ninja
+      - name: Build Release
+        run: |
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -G Ninja -S . -B build
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build
+      - name: Create install directory
+        run: |
+          CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --install build --prefix install
+      - name: Upload Release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-release-artifacts
+          path: install/
+          retention-days: 7

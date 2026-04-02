@@ -47,35 +47,10 @@ add_library(docker_cpp_client
   version_cmd_exec.cc
 )
 
-# is this needed?
-target_include_directories(docker_cpp_client PUBLIC ../include
-  create_container_cmd.hh
-  create_container_response.hh
-  create_container_cmd_exec.hh
-  docker_object.hh
-  docker_client.hh
-  docker_http_client.hh
-  curl_docker_http_client.hh
-  info.hh
-  inspect_container_cmd.hh
-  inspect_container_cmd_exec.hh
-  version.hh
-  docker_cmd.hh
-  docker_exception.hh
-  ping_cmd.hh
-  docker_client_config.hh
-  pull_image_cmd.hh
-  synch_docker_cmd.hh
-  abstr_sync_docker_cmd_exec.hh
-  webtarget.hh
-  remove_image_cmd.hh
-  remove_image_cmd_exec.hh
-  start_container_cmd.hh
-  start_container_cmd_exec.hh
-  stop_container_cmd.hh
-  stop_container_cmd_exec.hh
-  ping_cmd_exec.hh
-  version_cmd.hh
+# Set public include directories
+target_include_directories(docker_cpp_client PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+  $<INSTALL_INTERFACE:include>
 )
 
 include(FetchContent)
@@ -87,3 +62,19 @@ FetchContent_MakeAvailable(json)
 target_link_libraries(docker_cpp_client PRIVATE spdlog::spdlog curl  nlohmann_json::nlohmann_json ${Boost_LIBRARIES})
 
 target_compile_features(docker_cpp_client PUBLIC cxx_std_20)
+
+# Set library version properties
+set_target_properties(docker_cpp_client PROPERTIES
+  VERSION ${DOCKER_CPP_VERSION_STRING}
+  SOVERSION ${DOCKER_CPP_VERSION_MAJOR}
+  PUBLIC_HEADER "../include/docker_client.hh"
+)
+
+# Install library
+install(
+  TARGETS docker_cpp_client
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
