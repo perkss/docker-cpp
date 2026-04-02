@@ -31,6 +31,12 @@
 *.out
 *.app
 
+# Clangd
+
+.clangd/
+.cache/
+compile-commands.json
+
 # CMake
 /build
 build-*/
