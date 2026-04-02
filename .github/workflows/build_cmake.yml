@@ -11,45 +11,21 @@ env:
 
 jobs:
   macos-native-x86_64:
-    name: 'macos-15'
-    # Use latest image, but hardcode version to avoid silent upgrades (and breaks).
-    # See: https://github.com/actions/runner-images#available-images.
-    runs-on: macos-15  # Intel x86_64 runner
+    name: "macOS Debug (Intel)"
+    runs-on: macos-15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Clang version
-        run: clang --version
-      - name: cmake version
-        run: cmake -version
+      - uses: actions/checkout@v4
       - name: Checkout submodules
         run: git submodule update --init --recursive
       - name: Install Homebrew packages
         run: |
-          # Install required build-time packages but let the setup-docker action manage Colima/Docker
           brew install cmake boost spdlog nlohmann-json llvm curl ninja
-          ln -s "$(brew --prefix llvm)/bin/clang-format" "/usr/local/bin/clang-format"
-          ln -s "$(brew --prefix llvm)/bin/clang-tidy" "/usr/local/bin/clang-tidy"
-          ln -s "$(brew --prefix llvm)/bin/clang-apply-replacements" "/usr/local/bin/clang-apply-replacements"
-      - name: Setup Docker on macOS
-        id: setup-docker
-        uses: douglascamata/setup-docker-macos-action@v1
-        with:
-          # Pass Colima startup options (CPU and memory) via the additional options input
-          colima-additional-options: '--cpu 4 --memory 8'
-          colima-network-address: false
-      - name: Log Docker and Colima versions
-        run: |
-          sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
-          echo "Colima version: ${{ steps.setup-docker.outputs.colima-version }}"
-          echo "Docker client version: ${{ steps.setup-docker.outputs.docker-client-version }}"
-      - name: Verify Docker
-        run: |
-          docker ps || { echo "Docker not responding, waiting..."; sleep 10; docker ps; }
-      - name: Build CMAKE directory
+      - name: Build Debug
         run: |
           CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja -S . -B build
           CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build
+      - name: Run tests
+        run: |
           CMAKE_POLICY_VERSION_MINIMUM=4.2.1 cmake --build build -t test
 
   build:
