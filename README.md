@@ -31,32 +31,90 @@ Allow the default Docker socket to be used (requires password). Is enabled if us
 
 The tests folder contains many examples of using the docker client for c++ this is a great place to look.
 
+### Basic Connection Test
 
+Start with a simple ping to verify Docker is accessible:
+
+```cpp
+dockercpp::DockerClient dockerclient;
+
+// Verify Docker daemon is running
+auto ping = dockerclient.pingCmd()->exec();
+std::cout << "Docker is accessible: " << ping << std::endl;
 ```
- dockercpp::DockerClient dockerclient;
 
-  // Pull an image named busybox with version 1.36
-  auto pulledImage =
-      dockerclient.pullImageCmd("busybox")->withTag("1.36").exec();
+### Working with Images
 
-  // Create the container with a name example and a command.
-  auto response = dockerclient.createContainerCmd("busybox:1.36")
-                      ->withName("example")
-                      .withCmd(std::vector<std::string>{"sleep", "9999"})
-                      .exec();
+Pull and manage Docker images:
 
-  auto startcontainer = dockerclient.startContainerCmd(response.id)->exec();
+```cpp
+dockercpp::DockerClient dockerclient;
 
-  auto inspectcontainer = dockerclient.inspectContainerCmd(response.id)->exec();
+// Pull an image
+auto pulledImage = dockerclient.pullImageCmd("busybox")
+    ->withTag("1.36")
+    .exec();
 
-  auto stopcontainer = dockerclient.stopContainerCmd(response.id)->exec();
-
-  // Check the container status now it is stopped
-  auto inspectcontainerstopped =
-      dockerclient.inspectContainerCmd(response.id)->exec();
-
-  // Clean up the container by first deleting it and then removing the image
-  auto deletecontainer = dockerclient.removeContainerCmd(response.id)->exec();
-
-  auto deleteimage = dockerclient.removeImageCmd("busybox")->exec();
+// Inspect an image
+auto imageInfo = dockerclient.inspectImageCmd("busybox:1.36")->exec();
+std::cout << "Image ID: " << imageInfo.id << std::endl;
 ```
+
+### Container Lifecycle Management
+
+Create, start, stop, and remove containers:
+
+```cpp
+dockercpp::DockerClient dockerclient;
+
+// Create a container with a name and command
+auto response = dockerclient.createContainerCmd("busybox:1.36")
+    ->withName("my-container")
+    .withCmd(std::vector<std::string>{"sleep", "9999"})
+    .exec();
+
+std::cout << "Created container with ID: " << response.id << std::endl;
+
+// Start the container
+dockerclient.startContainerCmd(response.id)->exec();
+std::cout << "Container started" << std::endl;
+
+// Inspect running container to get details
+auto inspectInfo = dockerclient.inspectContainerCmd(response.id)->exec();
+std::cout << "Container running: " << inspectInfo.state.running << std::endl;
+std::cout << "Container exit code: " << inspectInfo.state.exitCode << std::endl;
+
+// Stop the running container
+dockerclient.stopContainerCmd(response.id)->exec();
+std::cout << "Container stopped" << std::endl;
+
+// Inspect stopped container
+auto stoppedInfo = dockerclient.inspectContainerCmd(response.id)->exec();
+std::cout << "Container running (should be false): " << stoppedInfo.state.running << std::endl;
+
+// Remove the container
+dockerclient.removeContainerCmd(response.id)->exec();
+std::cout << "Container removed" << std::endl;
+```
+
+### Getting Docker Information
+
+Query Docker daemon information:
+
+```cpp
+dockercpp::DockerClient dockerclient;
+
+// Get Docker version information
+auto versionInfo = dockerclient.versionCmd()->exec();
+std::cout << "Docker Version: " << versionInfo.version << std::endl;
+std::cout << "API Version: " << versionInfo.apiVersion << std::endl;
+std::cout << "OS: " << versionInfo.operatingSystem << std::endl;
+
+// Get Docker system information
+auto info = dockerclient.infoCmd()->exec();
+std::cout << "Containers: " << info.containers << std::endl;
+std::cout << "Images: " << info.images << std::endl;
+std::cout << "Running: " << info.containersRunning << std::endl;
+std::cout << "Stopped: " << info.containersStopped << std::endl;
+```
+
