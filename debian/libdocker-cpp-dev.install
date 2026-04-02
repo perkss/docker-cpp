@@ -1,0 +1,5 @@
+usr/include/
+usr/lib/*/libdocker_cpp_client.so
+usr/lib/*/libdocker_cpp_client.a
+usr/lib/*/pkgconfig/docker_cpp.pc
+usr/lib/*/cmake/

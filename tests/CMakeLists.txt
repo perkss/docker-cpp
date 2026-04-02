@@ -24,6 +24,7 @@ add_executable(
         remove_image_cmd_exec_test.cc
         load_image_cmd_test.cc
         version_test.cc
+        readme_examples_test.cc
       )
 
 # add required local or remote libraries here
